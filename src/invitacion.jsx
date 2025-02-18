@@ -194,7 +194,7 @@ const Invitacion = () => {
           {/* Contenedor de botones */}
           <div className="flex flex-col items-center gap-3 absolute bottom-2 md:bottom-5 w-full px-4">
             <a
-              href="https://wa.me/+5491125316881/?text=Confirmo%20Asistencia%🩶🩵"
+              href="https://wa.me/+5491125316881/?text=Confirmo%20Asistencia%20🩶🩵"
               target="_blank"
               rel="noopener noreferrer"
               className="animate-slideUp glow bg-gray-300 text-black font-semibold text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-md hover:bg-gray-400 transition transform hover:scale-105 hover:shadow-lg w-auto min-w-[150px] max-w-[200px] md:w-64 text-center"
