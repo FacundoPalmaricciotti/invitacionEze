@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
-import { Volume2, VolumeX, Clock, CheckCircle } from "lucide-react";
+import { Volume2, VolumeX, Clock } from "lucide-react";
 
 const Invitacion = () => {
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const Invitacion = () => {
   const [musica, setMusica] = useState(false);
   const [interaccionUsuario, setInteraccionUsuario] = useState(false);
   const [tiempoRestante, setTiempoRestante] = useState(""); // Estado para la cuenta regresiva
-
+  const [mensajeMusica, setMensajeMusica] = useState(""); // ✅ Agregado correctamente
 
   const audioRef = useRef(null);
 
@@ -42,12 +42,18 @@ const Invitacion = () => {
 
     if (musica) {
       audioRef.current.pause();
+      setMensajeMusica("Música apagada");
     } else {
       audioRef.current.play().catch((error) =>
         console.error("Error al reproducir:", error)
       );
+      setMensajeMusica("Música encendida");
     }
+
     setMusica(!musica);
+
+    // Ocultar el mensaje después de 2 segundos
+    setTimeout(() => setMensajeMusica(""), 1000);
   };
 
   useEffect(() => {
@@ -64,7 +70,6 @@ const Invitacion = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [musica]);
-  
   
 
 
@@ -189,17 +194,22 @@ const Invitacion = () => {
           onClick={toggleFondo}
         >
 
-          {/* Botón de música */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleMusica();
-            }}
-            className="absolute top-4 right-4 bg-gray-300 text-black p-2 rounded-full shadow-md hover:bg-gray-400 transition transform hover:scale-110 
-              w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-sm md:text-base"
-          >
-            {musica ? <Volume2 size={20} /> : <VolumeX size={20} />}
-          </button>
+      {/* Botón de música */}
+      <button
+  onClick={toggleMusica}
+  className="absolute top-4 right-4 bg-gray-300 text-black p-1.5 rounded-full shadow-md hover:bg-gray-400 transition transform hover:scale-110 
+    w-7 h-7 md:w-9 md:h-9 flex items-center justify-center text-xs md:text-sm"
+>
+  {musica ? <Volume2 size={20} /> : <VolumeX size={20} />}
+</button>
+
+
+      {/* Mensaje temporal de música */}
+      {mensajeMusica && (
+        <div className="absolute top-16 right-4 bg-black text-white text-sm px-3 py-2 rounded-md shadow-lg animate-fadeIn">
+          {mensajeMusica}
+        </div>
+      )}
 
           {/* Contenedor de botones */}
           <div className="flex flex-col items-center gap-3 absolute bottom-4.5 md:bottom-5 w-full px-4">
@@ -217,15 +227,11 @@ const Invitacion = () => {
               Ver ubicación en Google Maps
             </a>
 
-{/* Cuenta regresiva debajo del enlace */}
 {/* Cuenta regresiva */}
 <p className="text-white text-sm md:text-base font-semibold bg-black bg-opacity-40 px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-md w-auto min-w-[150px] max-w-[200px] md:w-64 text-center transition-all ease-in-out duration-500 flex items-center justify-center gap-2">
   <Clock size={20} className="flex-shrink-0" />
   <span className="leading-none">{tiempoRestante}</span>
 </p>
-
-
-
           </div>
         </div>
       )}
