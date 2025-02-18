@@ -18,10 +18,11 @@ const Invitacion = () => {
 
   useEffect(() => {
     audioRef.current.loop = true;
+  
     const handleVisibilityChange = () => {
       if (document.hidden) {
         audioRef.current.pause();
-        setMusica(false); // Actualiza el estado para reflejar que la música está pausada
+        setMusica(false); // Asegura que el estado refleje que la música está pausada
       }
     };
   
@@ -30,27 +31,18 @@ const Invitacion = () => {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("touchstart", handleUserInteraction);
     };
-
+  
     document.addEventListener("click", handleUserInteraction);
     document.addEventListener("touchstart", handleUserInteraction);
-
+    document.addEventListener("visibilitychange", handleVisibilityChange); // 💡 Aquí se añade el evento
+  
     return () => {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("touchstart", handleUserInteraction);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange); // 💡 Se limpia correctamente
     };
   }, []);
-
-  const toggleMusica = () => {
-    if (!interaccionUsuario) return;
-
-    if (musica) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch((error) => console.error("Error al reproducir:", error));
-    }
-    setMusica(!musica);
-  };
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
