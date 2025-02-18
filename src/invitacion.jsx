@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import { Volume2, VolumeX, Clock, CheckCircle } from "lucide-react";
 
 const Invitacion = () => {
   const [loading, setLoading] = useState(true);
@@ -14,11 +13,18 @@ const Invitacion = () => {
   const [interaccionUsuario, setInteraccionUsuario] = useState(false);
   const [tiempoRestante, setTiempoRestante] = useState(""); // Estado para la cuenta regresiva
 
+
   const audioRef = useRef(new Audio("/musica_fiesta.mp3"));
 
   useEffect(() => {
     audioRef.current.loop = true;
-
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        audioRef.current.pause();
+        setMusica(false); // Actualiza el estado para reflejar que la música está pausada
+      }
+    };
+  
     const handleUserInteraction = () => {
       setInteraccionUsuario(true);
       document.removeEventListener("click", handleUserInteraction);
@@ -31,6 +37,7 @@ const Invitacion = () => {
     return () => {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -57,14 +64,18 @@ const Invitacion = () => {
           }, 500);
           return 100;
         } else {
-          setMensaje(mensajesCarga[Math.floor(prev / 40)]);
+          // Normalizamos el índice para evitar valores incorrectos
+          const indiceMensaje = Math.floor((prev / 100) * mensajesCarga.length);
+          setMensaje(mensajesCarga[indiceMensaje]);
+  
           return prev + 5;
         }
       });
     }, 200);
-
+  
     return () => clearInterval(interval);
   }, []);
+  
 
   // Cuenta regresiva
   useEffect(() => {
@@ -96,7 +107,8 @@ const Invitacion = () => {
   const mensajesCarga = [
     "Se viene la mejor fiesta del año...",
     "Es momento de activar los prohibidos...",
-    "Hay que ponerse bien facheritos..."
+    "Hay que ponerse bien facheritos...",
+    "Code dress: Elegante Sport"
   ];
 
   const lanzarConfeti = () => {
@@ -133,29 +145,10 @@ const Invitacion = () => {
     lanzarConfeti();
   };
 
-  const particlesInit = async (main) => {
-    await loadFull(main);
-  };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black relative">
-      
-      {/* Fondo de partículas animadas */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: { color: "#000000" },
-          particles: {
-            color: { value: "#ffffff" },
-            links: { enable: true, distance: 150, color: "#ffffff" },
-            move: { enable: true, speed: 2 },
-            number: { value: 50 },
-          },
-        }}
-        className="absolute inset-0"
-      />
-
       {loading ? (
         <div className="flex flex-col items-center">
           <p className="text-white text-lg mb-2 animate-fadeIn">{mensaje}</p>
@@ -173,7 +166,7 @@ const Invitacion = () => {
           ${mostrarZoom ? "animate-zoomIn" : ""} `}
           style={{
             backgroundImage: `url('${
-              modoAzul ? "/invitacion_blue.png" : "/invitacion_black.png"
+              modoAzul ? "/invitacion_black.png" : "/invitacion_blue.png"
             }')`
           }}
           onClick={toggleFondo}
@@ -188,13 +181,13 @@ const Invitacion = () => {
             className="absolute top-4 right-4 bg-gray-300 text-black p-2 rounded-full shadow-md hover:bg-gray-400 transition transform hover:scale-110 
               w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-sm md:text-base"
           >
-            {musica ? "🔊" : "🔇"}
+            {musica ? <Volume2 size={20} /> : <VolumeX size={20} />}
           </button>
 
           {/* Contenedor de botones */}
-          <div className="flex flex-col items-center gap-3 absolute bottom-2 md:bottom-5 w-full px-4">
+          <div className="flex flex-col items-center gap-3 absolute bottom-4.5 md:bottom-5 w-full px-4">
             <a
-              href="https://wa.me/+5491125316881/?text=Confirmo%20Asistencia%20🩶🩵"
+              href="https://wa.me/+5491125316881/?text=⚽%20Confirmo%20Asistencia%20⚽"
               target="_blank"
               rel="noopener noreferrer"
               className="animate-slideUp glow bg-gray-300 text-black font-semibold text-sm md:text-base px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-md hover:bg-gray-400 transition transform hover:scale-105 hover:shadow-lg w-auto min-w-[150px] max-w-[200px] md:w-64 text-center"
@@ -208,9 +201,12 @@ const Invitacion = () => {
             </a>
 
 {/* Cuenta regresiva debajo del enlace */}
-<p className="text-white text-sm md:text-base font-semibold bg-black bg-opacity-40 px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-md w-auto min-w-[150px] max-w-[200px] md:w-64 text-center transition-all ease-in-out duration-500">
-  ⏳ {tiempoRestante}
+{/* Cuenta regresiva */}
+<p className="text-white text-sm md:text-base font-semibold bg-black bg-opacity-40 px-4 py-2 md:px-6 md:py-3 rounded-lg shadow-md w-auto min-w-[150px] max-w-[200px] md:w-64 text-center transition-all ease-in-out duration-500 flex items-center justify-center gap-2">
+  <Clock size={20} className="flex-shrink-0" />
+  <span className="leading-none">{tiempoRestante}</span>
 </p>
+
 
 
           </div>

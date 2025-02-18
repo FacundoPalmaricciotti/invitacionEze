@@ -10,13 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tsparticles/engine": "^3.8.1",
+    "@tsparticles/react": "^3.0.0",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.4.3",
+    "lucide-react": "^0.475.0",
     "motion": "^12.4.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-p5": "^1.4.1",
     "react-tsparticles": "^2.12.2",
-    "tsparticles": "^3.8.1"
+    "tsparticles": "^3.8.1",
+    "tsparticles-engine": "^2.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
