@@ -14,47 +14,61 @@ const Invitacion = () => {
   const [tiempoRestante, setTiempoRestante] = useState(""); // Estado para la cuenta regresiva
 
 
-  const audioRef = useRef(new Audio("/musica_fiesta.mp3"));
+  const audioRef = useRef(null);
 
   useEffect(() => {
+    audioRef.current = new Audio("/musica_fiesta.mp3");
     audioRef.current.loop = true;
-  
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        audioRef.current.pause();
-        setMusica(false); // Actualiza el estado para reflejar que la música está pausada
-      }
-    };
-  
+
     const handleUserInteraction = () => {
       setInteraccionUsuario(true);
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("touchstart", handleUserInteraction);
     };
-  
+
     document.addEventListener("click", handleUserInteraction);
     document.addEventListener("touchstart", handleUserInteraction);
-    document.addEventListener("visibilitychange", handleVisibilityChange); // ✅ Agregado correctamente
-  
+
     return () => {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("touchstart", handleUserInteraction);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      audioRef.current.pause(); // Pausar la música si el componente se desmonta
+      audioRef.current = null;
     };
   }, []);
-  
+
   const toggleMusica = () => {
     if (!interaccionUsuario) return;
-  
+
     if (musica) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play().catch((error) => console.error("Error al reproducir:", error));
+      audioRef.current.play().catch((error) =>
+        console.error("Error al reproducir:", error)
+      );
     }
     setMusica(!musica);
   };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && musica) {
+        audioRef.current.pause();
+        setMusica(false); // Asegurar que el estado refleje la pausa
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [musica]);
+  
   
 
+
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => {
