@@ -175,7 +175,7 @@ const Invitacion = () => {
     setContadorFondo((prev) => prev + 1);
   };
   useEffect(() => {
-    if (contadorFondo >= 1) {
+    if (contadorFondo >= 5) {
       navigate("/sorpresa"); // ✅ Ahora la redirección es segura
     }
   }, [contadorFondo]); // Se ejecuta solo cuando cambia contadorFondo  
