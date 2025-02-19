@@ -19,6 +19,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-p5": "^1.4.1",
+    "react-router-dom": "^7.2.0",
     "react-tsparticles": "^2.12.2",
     "tsparticles": "^3.8.1",
     "tsparticles-engine": "^2.12.0"

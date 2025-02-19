@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import { Volume2, VolumeX, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Invitacion = () => {
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ const Invitacion = () => {
   const [interaccionUsuario, setInteraccionUsuario] = useState(false);
   const [tiempoRestante, setTiempoRestante] = useState(""); // Estado para la cuenta regresiva
   const [mensajeMusica, setMensajeMusica] = useState(""); // ✅ Agregado correctamente
+  const [contadorFondo, setContadorFondo] = useState(0); // ✅ Contador de cambios de fon
 
   const audioRef = useRef(null);
 
@@ -155,17 +157,28 @@ const Invitacion = () => {
     fire(0.1, { spread: 250, startVelocity: 45 });
   };
 
+
+  const navigate = useNavigate(); // Agrega esta línea dentro de tu componente
   const toggleFondo = (e) => {
     if (e.target.tagName !== "DIV") return;
+  
     setAnimarBrillo(true);
     setModoAzul(!modoAzul);
-
+  
     setTimeout(() => {
       setAnimarBrillo(false);
     }, 500);
-
+  
     lanzarConfeti();
+  
+    // ✅ Solo aumenta el contador, sin redirigir aún
+    setContadorFondo((prev) => prev + 1);
   };
+  useEffect(() => {
+    if (contadorFondo >= 10) {
+      navigate("/sorpresa"); // ✅ Ahora la redirección es segura
+    }
+  }, [contadorFondo]); // Se ejecuta solo cuando cambia contadorFondo  
 
 
 
