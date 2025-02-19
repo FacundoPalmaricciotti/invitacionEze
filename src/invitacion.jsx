@@ -55,7 +55,7 @@ const Invitacion = () => {
     setMusica(!musica);
 
     // Ocultar el mensaje después de 2 segundos
-    setTimeout(() => setMensajeMusica(""), 1);
+    setTimeout(() => setMensajeMusica(""), 1000);
   };
 
   useEffect(() => {
@@ -175,7 +175,7 @@ const Invitacion = () => {
     setContadorFondo((prev) => prev + 1);
   };
   useEffect(() => {
-    if (contadorFondo >= 10000) {
+    if (contadorFondo >= 1) {
       navigate("/sorpresa"); // ✅ Ahora la redirección es segura
     }
   }, [contadorFondo]); // Se ejecuta solo cuando cambia contadorFondo  
