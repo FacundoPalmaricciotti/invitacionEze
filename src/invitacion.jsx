@@ -55,7 +55,7 @@ const Invitacion = () => {
     setMusica(!musica);
 
     // Ocultar el mensaje después de 2 segundos
-    setTimeout(() => setMensajeMusica(""), 1000);
+    setTimeout(() => setMensajeMusica(""), 1);
   };
 
   useEffect(() => {
